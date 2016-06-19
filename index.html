@@ -8,25 +8,12 @@
   <!-- Bootstrap minified Optional theme -->
   <link rel="stylesheet" href="libs/bootstrapv3/css/bootstrap-theme.min.css">
 
-  <!-- Include Jquery -->
-  <script src="libs/jquery/jquery-1.11.1.min.js"></script>
-
-  <!-- Bootstrap minified JavaScript -->
-  <script src="libs/bootstrapv3/js/bootstrap.min.js"></script>
-
-  <script type="text/javascript" src="libs/octo.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="row">
       <div class="title">
         <h2>Octo Javascript Client</h2>
-      </div>
-    </div>
-    <div class="row">
-      <h4>Request JSON</h4>
-      <div class="jsonTag">
-        <!-- Dummy JSON goes here -->
       </div>
     </div>
     <div class="row">
@@ -45,64 +32,112 @@
       <button class="btn btn-primary" onclick="productviewCall()">
         App Product Pageview
       </button>
+      <button class="btn btn-primary" onclick="updateProfile()">
+        Update Profile
+      </button>
+      <button class="btn btn-primary" onclick="addProduct()">
+        Add Product
+      </button>
+    </div>
+    <div class="row">
+      <h4>Request JSON</h4>
+      <div class="jsonTag">
+        <!-- Dummy JSON goes here -->
+        <pre></pre>
+      </div>
     </div>
     <div class="row">
       <h4>Response JSON</h4>
       <div class="response">
         <!-- Response JSON -->
+        <pre></pre>
       </div>
     </div>
   </div>
+
+  <!-- Include Jquery -->
+  <script src="libs/jquery/jquery-1.11.1.min.js"></script>
+
+  <!-- Bootstrap minified JavaScript -->
+  <script src="libs/bootstrapv3/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="libs/octo.js"></script>
 
   <script type="text/javascript">
     // Javascript Goes here
 
     var baseUrl = "http://127.0.0.1:8000";
-    var API_KEY = "dcfc6a2d75d46ee4934e8c89a56676dd";
+    var API_KEY = "2cf4edcc20ca2cc4ff1f7e29779c8dc6";
 
     var initUrl = baseUrl.concat("/events/app.init/");
     var loginUrl = baseUrl.concat("/events/app.login/");
     var logoutUrl = baseUrl.concat("/events/app.logout/");
     var pageUrl = baseUrl.concat("/events/page.view/");
     var productUrl = baseUrl.concat("/events/productpage.view/");
+    var profileUrl = baseUrl.concat("/update_profile/");
+    var addProductUrl = baseUrl.concat("/product/");
 
     function initCall(){
-      $.octo.ajax(initUrl, json_data, {apikey: API_KEY});
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_common, undefined, 2) + "</pre>");
+      $.octo.ajax(initUrl, json_data_common, {apikey: API_KEY});
     }
 
     function loginCall(){
-      $.octo.ajax(loginUrl, json_data, {apikey: API_KEY});
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_common, undefined, 2) + "</pre>");
+      $.octo.ajax(loginUrl, json_data_common, {apikey: API_KEY});
     }
 
     function logoutCall(){
-      $.octo.ajax(logoutUrl, json_data, {apikey: API_KEY});
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_common, undefined, 2) + "</pre>");
+      $.octo.ajax(logoutUrl, json_data_common, {apikey: API_KEY});
     }
 
     function pageviewCall(){
-      $.octo.ajax(pageUrl, json_data, {apikey: API_KEY});
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_page, undefined, 2) + "</pre>");
+      $.octo.ajax(pageUrl, json_data_page, {apikey: API_KEY});
     }
 
     function productviewCall(){
-      $.octo.ajax(productUrl, json_data, {apikey: API_KEY});
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_product, undefined, 2) + "</pre>");
+      $.octo.ajax(productUrl, json_data_product, {apikey: API_KEY});
+    }
+
+    function updateProfile(){
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_data_profile, undefined, 2) + "</pre>");
+      $.octo.ajax(profileUrl, json_data_profile, {apikey: API_KEY});
+    }
+
+    function addProduct(){
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_add_product, undefined, 2) + "</pre>");
+      $.octo.ajax(addProductUrl, json_add_product, {apikey: API_KEY});
     }
 
     // Ajax callback function
     function onSuccess(data) {
+      console.log(data);
       $('.response').html("<pre>" + JSON.stringify(data, undefined, 2) + "</pre>");
     }
 
     // Ajax callback function
     function onError(data) {
-      $('.response').html(data.responseText);
+      $('.response').html("<pre>" + JSON.stringify(data.responseJSON, undefined, 2) + "</pre>");
     }
 
-    var json_data = {
-      userId: 2736482,
-      browserDetails: {
+    var browser_details_json = {
         name: $.octo.browser_name(),
         platform: navigator.platform,
-        manufacturer: navigator.vendor
-      },
+        manufacturer: navigator.vendor,
+        cookieid: 'random'
+      };
+
+    var json_data_common = {
+      userId: 123456789,
+      browserDetails: browser_details_json
+    };
+
+    var json_data_page = {
+      userId: 123456789,
+      browserDetails: browser_details_json,
       routeUrl: "/Home/DealsOfTheDay/34",
       categories: [
         "shopping"
@@ -111,17 +146,54 @@
         "handbags",
         "aldo",
         "yellow"
+      ]
+    };
+
+    var json_data_product = {
+      userId: 123456789,
+      browserDetails: browser_details_json,
+      routeUrl: "/Home/DealsOfTheDay/23",
+      categories: [
+        "shopping"
       ],
-      productId: 63726,
+      tags: [
+        "handbags",
+        "aldo",
+        "yellow"
+      ],
+      productId: 63725,
       productName: "Smartphone Series S01",
       price: 99.99
     };
 
-    console.log(navigator);
+    var json_data_profile = {
+      userId: 123456789,
+      browserDetails: browser_details_json,
+      profileDetails: {
+        email: 'ravingupta129@gmail.com',
+        username: 'username',
+        gender: 'Male',
+        dob: '321ded12dw1d2s1',
+        alternate_email: '',
+        mobile: '123467890',
+        extras: ''
+      }
+    };
 
-    $('.jsonTag').html("<pre>" + JSON.stringify(json_data, undefined, 2) + "</pre>");
+    var json_add_product = {
+      routeUrl: "/Home/DealsOfTheDay/23",
+      categories: [
+        "shopping"
+      ],
+      tags: [
+        "handbags",
+        "aldo",
+        "yellow"
+      ],
+      productId: 63725,
+      productName: "Smartphone Series S01",
+      price: 99.99
+    };
   </script>
-
-  
 </body>
 </html>
