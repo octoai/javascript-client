@@ -177,9 +177,4 @@
       $.octo.pageView(options);
     });
   };
-
-      return "unknown";
-    }
-  }
-
 })(jQuery);
