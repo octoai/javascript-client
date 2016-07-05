@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
   <title>Octo Javascript Client</title>
@@ -26,7 +26,7 @@
       <button class="btn btn-primary" onclick="logoutCall()">
         App Logout
       </button>
-      <button class="btn btn-primary" onclick="pageviewCall()">
+      <button class="btn btn-primary" onclick="$.octo.pageView">
         App Pageview
       </button>
       <button class="btn btn-primary" onclick="productviewCall()">
@@ -49,7 +49,7 @@
     <div class="row">
       <h4>Response JSON</h4>
       <div class="response">
-        <!-- Response JSON -->
+        <!- Response JSON -->
         <pre></pre>
       </div>
     </div>
@@ -58,17 +58,20 @@
   <!-- Include Jquery -->
   <script src="libs/jquery/jquery-1.11.1.min.js"></script>
 
+  <!-- Include cookie.js -->
+  <script type="text/javascript" src="libs/jquery.cookie.js"></script>
+
   <!-- Bootstrap minified JavaScript -->
   <script src="libs/bootstrapv3/js/bootstrap.min.js"></script>
 
   <script type="text/javascript" src="libs/octo.js"></script>
 
   <script type="text/javascript">
+    
     // Javascript Goes here
 
     var baseUrl = "http://127.0.0.1:8000";
     var API_KEY = "2cf4edcc20ca2cc4ff1f7e29779c8dc6";
-
     var initUrl = baseUrl.concat("/events/app.init/");
     var loginUrl = baseUrl.concat("/events/app.login/");
     var logoutUrl = baseUrl.concat("/events/app.logout/");
@@ -76,6 +79,7 @@
     var productUrl = baseUrl.concat("/events/productpage.view/");
     var profileUrl = baseUrl.concat("/update_profile/");
     var addProductUrl = baseUrl.concat("/product/");
+
 
     function initCall(){
       $('.jsonTag').html("<pre>" + JSON.stringify(json_data_common, undefined, 2) + "</pre>");
@@ -127,7 +131,7 @@
         name: $.octo.browser_name(),
         platform: navigator.platform,
         manufacturer: navigator.vendor,
-        cookieid: 'random'
+
       };
 
     var json_data_common = {
@@ -194,6 +198,12 @@
       productName: "Smartphone Series S01",
       price: 99.99
     };
+
+  $.octo.apikey = API_KEY;
+
+  $.octo.init({
+  });
+  
   </script>
 </body>
 </html>

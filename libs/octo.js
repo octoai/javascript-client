@@ -9,6 +9,12 @@
     cookie_name: '_oid'
   };
 
+// Global variables for location
+  $.octo.locality = {
+    latitude: 0,
+    longitude: 0
+  };
+
   function guid() {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
@@ -19,9 +25,36 @@
       s4() + '-' + s4() + s4() + s4();
   }
 
+ // the getLocationpermission event call
+  $.octo.getLocationpermission = function(callback, options) {
+    navigator.geolocation.getCurrentPosition(success, errorCallback);
+  };
+  
+  // callback function of getLocationpermisson if user gives permission
+  function success(position, options) {
+      $.octo.locality.latitude = position.coords.latitude;
+      $.octo.locality.longitude = position.coords.longitude;
+      $.octo.pageView(arguments[1]);
+    }
+
+// callback function of getLocationpermisson if user denies permission
+ function errorCallback(error, options) {
+      switch (error.code) {
+      case error.PERMISSION_DENIED:
+        $.octo.pageView(arguments[1]);        
+        break;
+      case error.POSITION_UNAVAILABLE:
+        $.octo.pageView(arguments[1]);
+        break;
+      case error.PERMISSION_DENIED_TIMEOUT:
+        $.octo.pageView(arguments[1]);          
+        break;
+    }
+}
 
   // the pageview event call
   $.octo.pageView = function(options) {
+    console.log("1")
     if (options == undefined) {
       options = {};
     }
@@ -38,6 +71,16 @@
     var pageUrl = $.octo.defaults.base_url.concat("/events/page.view/");
     $.octo.ajax(pageUrl, pageViewOpts);
   };
+
+  // gets the latitude of the user 
+  $.octo.getlatitude = function() {
+    return $.octo.locality.latitude;
+  }
+
+  //gets the longitude of the user
+   $.octo.getlongitude = function() {
+    return $.octo.locality.longitude;
+  }
 
   // gets the cookie id corresponding to a cookie name
   $.octo.getCookieId = function(cookie_name) {
@@ -161,20 +204,21 @@
     }
   };
 
-
   $.octo.browserDetails = function(cookie_name){
     return {
       name: $.octo.browser_name(),
       platform: navigator.platform,
       manufacturer: navigator.vendor,
-      cookieid: $.octo.getCookieId(cookie_name)
+      cookieid: $.octo.getCookieId(cookie_name),
+      latitude: $.octo.getlatitude(),
+      longitude: $.octo.getlongitude()
     };
   };
 
 
   $.octo.init = function(options){
     $( document ).ready(function() {
-      $.octo.pageView(options);
+      $.octo.getLocationpermission($.octo.pageView, options);
     });
   };
 })(jQuery);
