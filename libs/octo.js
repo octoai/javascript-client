@@ -29,7 +29,7 @@
   $.octo.getLocationpermission = function(callback, options) {
     navigator.geolocation.getCurrentPosition(success, errorCallback);
   };
-  
+
   // callback function of getLocationpermisson if user gives permission
   function success(position, options) {
       $.octo.locality.latitude = position.coords.latitude;
@@ -37,20 +37,20 @@
       $.octo.pageView(arguments[1]);
     }
 
-// callback function of getLocationpermisson if user denies permission
- function errorCallback(error, options) {
+  // callback function of getLocationpermisson if user denies permission
+  function errorCallback(error, options) {
       switch (error.code) {
       case error.PERMISSION_DENIED:
-        $.octo.pageView(arguments[1]);        
+        $.octo.pageView(arguments[1]);
         break;
       case error.POSITION_UNAVAILABLE:
         $.octo.pageView(arguments[1]);
         break;
       case error.PERMISSION_DENIED_TIMEOUT:
-        $.octo.pageView(arguments[1]);          
+        $.octo.pageView(arguments[1]);
         break;
     }
-}
+  }
 
   // the pageview event call
   $.octo.pageView = function(options) {
@@ -72,7 +72,7 @@
     $.octo.ajax(pageUrl, pageViewOpts);
   };
 
-  // gets the latitude of the user 
+  // gets the latitude of the user
   $.octo.getlatitude = function() {
     return $.octo.locality.latitude;
   }
@@ -222,3 +222,5 @@
     });
   };
 })(jQuery);
+
+
