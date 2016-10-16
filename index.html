@@ -49,7 +49,7 @@
     <div class="row">
       <h4>Response JSON</h4>
       <div class="response">
-        <!- Response JSON -->
+        <!-- Response JSON -->
         <pre></pre>
       </div>
     </div>
@@ -79,6 +79,7 @@
     var productUrl = baseUrl.concat("/events/productpage.view/");
     var profileUrl = baseUrl.concat("/update_profile/");
     var addProductUrl = baseUrl.concat("/product/");
+    var customEventUrl = baseUrl.concat("/custom/banner_ad/")
 
 
     function initCall(){
@@ -116,6 +117,11 @@
       $.octo.ajax(addProductUrl, json_add_product, {apikey: API_KEY});
     }
 
+    function customEvent(){
+      $('.jsonTag').html("<pre>" + JSON.stringify(json_custom_data, undefined, 2) + "</pre>");
+      $.octo.ajax(customEventUrl, json_custom_data, {apikey: API_KEY});
+    }
+
     // Ajax callback function
     function onSuccess(data) {
       console.log(data);
@@ -128,11 +134,10 @@
     }
 
     var browser_details_json = {
-        name: $.octo.browser_name(),
-        platform: navigator.platform,
-        manufacturer: navigator.vendor,
-
-      };
+      name: $.octo.browser_name(),
+      platform: navigator.platform,
+      manufacturer: navigator.vendor,
+    };
 
     var json_data_common = {
       userId: 123456789,
@@ -198,6 +203,17 @@
       productName: "Smartphone Series S01",
       price: 99.99
     };
+
+    var json_custom_data = {
+      routeUrl: "/Home/adv",
+      userId: 123456789,
+      browserDetails: browser_details_json,
+      advertisement_id: "123abc",
+      advertisement_tags: [
+        "banner",
+        "product"
+      ]
+    }
 
   $.octo.apikey = API_KEY;
 

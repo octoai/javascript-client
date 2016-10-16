@@ -215,12 +215,9 @@
     };
   };
 
-
   $.octo.init = function(options){
     $( document ).ready(function() {
       $.octo.getLocationpermission($.octo.pageView, options);
     });
   };
 })(jQuery);
-
-
